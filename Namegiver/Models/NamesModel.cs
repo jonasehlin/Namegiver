@@ -50,5 +50,12 @@ namespace Namegiver.Models
 				"UPDATE [dbo].[Name] SET [Accepted] = 1 WHERE [Id] = @id",
 				new { id });
 		}
+
+		internal async Task RejectName(int id)
+		{
+			await Db.ExecuteAsync(
+				"UPDATE [dbo].[Name] SET [Accepted] = 0, [RejectedCount] = [RejectedCount] + 1 WHERE [Id] = @id",
+				new { id });
+		}
 	}
 }

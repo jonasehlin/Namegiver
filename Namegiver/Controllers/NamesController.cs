@@ -33,5 +33,13 @@ namespace Namegiver.Controllers
 			await names.AcceptName(id);
 			return NoContent();
 		}
+
+		[HttpPut]
+		[Route("reject/{id}")]
+		public async Task<ActionResult> RejectName(int id)
+		{
+			await names.RejectName(id);
+			return NoContent();
+		}
 	}
 }
