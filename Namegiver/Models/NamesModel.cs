@@ -43,5 +43,12 @@ namespace Namegiver.Models
 			lastId = id;
 			return await GetName(id);
 		}
+
+		internal async Task AcceptName(int id)
+		{
+			await Db.ExecuteAsync(
+				"UPDATE [dbo].[Name] SET [Accepted] = 1 WHERE [Id] = @id",
+				new { id });
+		}
 	}
 }

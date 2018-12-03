@@ -26,18 +26,14 @@ namespace Namegiver.Controllers
 			return await names.GetRandomName();
 		}
 
-		[HttpGet("{id}", Name = "Get")]
-		public string Get(int id)
+		[HttpPut]
+		[Route("accept/{id}")]
+		public async Task<ActionResult> AcceptName(int id)
 		{
-			return "value";
+			await names.AcceptName(id);
+			return Ok();
 		}
-
-		[HttpPost]
-		public void Post([FromBody] string value)
-		{
-		}
-
-		[HttpPut("{id}")]
+		
 		public void Put(int id, [FromBody] string value)
 		{
 		}
