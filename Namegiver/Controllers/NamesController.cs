@@ -31,16 +31,7 @@ namespace Namegiver.Controllers
 		public async Task<ActionResult> AcceptName(int id)
 		{
 			await names.AcceptName(id);
-			return Ok();
-		}
-		
-		public void Put(int id, [FromBody] string value)
-		{
-		}
-
-		[HttpDelete("{id}")]
-		public void Delete(int id)
-		{
+			return NoContent();
 		}
 	}
 }
