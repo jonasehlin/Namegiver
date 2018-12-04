@@ -34,7 +34,8 @@ namespace Namegiver
 			}
 
 			app.UseHttpsRedirection();
-			app.UseMvc();
+			app.UseStaticFiles();
+			app.UseMvcWithDefaultRoute();
 		}
 	}
 }
