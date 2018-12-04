@@ -22,16 +22,19 @@
 			</div>
 		</div>
 
-		<form action="">
-			<div class="form-group">
+		<div class="row">
+			<div class="col-xs-12">
 				<h2 id="name"></h2>
 			</div>
 
-			<button type="submit" class="btn btn-default">Submit</button>
-		</form>
+			<input id="accept" type="button" name="accept" value="Accept" />
+			<input id="reject" type="button" name="reject" value="Reject" />
+		</div>
 
 		<script>
 			$(document).ready(function () {
+
+				var nameId = 0;
 
 				$.ajax({
 					url: '/api/names',
@@ -39,10 +42,41 @@
 				}).done(function (data, status, xhr) {
 					console.log('Success, data', data);
 					$('#name').text(data.text);
+					nameId = data.id;
 				}).fail(function (jqXhr, textStatus, errorMessage) {
 					console.log('Error in response from /api/names', textStatus);
+					nameId = -1;
 				});
 
+				$('#accept').click(function () {
+					if (nameId > 0) {
+
+						$.ajax({
+							url: '/api/names/' + nameId + '/accept',
+							type: 'PUT'
+						}).done(function (data, status, xhr) {
+							alert('Accept: ' + nameId);
+							// TODO: Load new random name
+						}).fail(function (jqXhr, textStatus, errorMessage) {
+							alert('Error: ' + nameId);
+						});
+					}
+				});
+
+				$('#reject').click(function () {
+					if (nameId > 0) {
+
+						$.ajax({
+							url: '/api/names/' + nameId + '/reject',
+							type: 'PUT'
+						}).done(function (data, status, xhr) {
+							alert('Reject: ' + nameId);
+							// TODO: Load new random name
+						}).fail(function (jqXhr, textStatus, errorMessage) {
+							alert('Error: ' + nameId);
+						});
+					}
+				});
 			});
 		</script>
 
