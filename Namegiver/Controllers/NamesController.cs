@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Namegiver.Models;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace Namegiver.Controllers
@@ -12,14 +11,16 @@ namespace Namegiver.Controllers
 	{
 		private readonly IConfiguration Configuration;
 
-		private readonly NamesModel Names;
-
 		public NamesController(IConfiguration configuration)
 		{
 			Configuration = configuration;
+		}
+
+		private NamegiverContext CreateContext()
+		{
 			string connectionString = Configuration.GetConnectionString("DefaultConnection");
-			// TODO: Dispose SqlConnection object
-			Names = new NamesModel(new SqlConnection(connectionString));
+			connectionString = connectionString.Replace("{server}", Configuration.GetSection("NAMEGIVER_SERVER").Value);
+			return new NamegiverContext(connectionString);
 		}
 
 		[HttpGet]
@@ -27,14 +28,21 @@ namespace Namegiver.Controllers
 		[Route("random")]
 		public async Task<ActionResult<Name>> GetRandomName()
 		{
-			return Ok(await Names.GetRandomName());
+			using (var db = CreateContext())
+			{
+				return Ok(await db.Names.GetRandomName());
+			}
 		}
 
 		[HttpPut]
 		[Route("{id}/accept")]
 		public async Task<ActionResult> AcceptName(int id)
 		{
-			await Names.AcceptName(id);
+			using (var db = CreateContext())
+			{
+				await db.Names.AcceptName(id);
+			}
+			
 			return NoContent();
 		}
 
@@ -42,7 +50,10 @@ namespace Namegiver.Controllers
 		[Route("{id}/reject")]
 		public async Task<ActionResult> RejectName(int id)
 		{
-			await Names.RejectName(id);
+			using (var db = CreateContext())
+			{
+				await db.Names.RejectName(id);
+			}
 			return NoContent();
 		}
 	}

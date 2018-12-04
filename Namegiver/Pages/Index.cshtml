@@ -14,17 +14,17 @@
 </head>
 <body>
 
-	<div class="container-fluid">
+	<div class="container-fluid" style="text-align: center;">
 
 		<div class="row">
 			<div class="col-xs-12">
-				<h1>Give me a name!</h1>
+				<h1>Here's a name for ya:</h1>
 			</div>
 		</div>
 
 		<form action="">
 			<div class="form-group">
-				<p id="name"></p>
+				<h2 id="name"></h2>
 			</div>
 
 			<button type="submit" class="btn btn-default">Submit</button>
@@ -38,11 +38,9 @@
 					type: 'GET'
 				}).done(function (data, status, xhr) {
 					console.log('Success, data', data);
-
 					$('#name').text(data.text);
-					
 				}).fail(function (jqXhr, textStatus, errorMessage) {
-					alert('here 2 fail');
+					console.log('Error in response from /api/names', textStatus);
 				});
 
 			});
