@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Namegiver.Models;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
@@ -15,7 +14,7 @@ namespace Namegiver.Controllers
 		public NamesController()
 		{
 			// TODO: Inject connection from services
-			names.Db = new SqlConnection("Data Source=(local);Initial Catalog=Namegiver;Integrated Security=True");
+			names.Db = new SqlConnection("Data Source=hobgoblin;Initial Catalog=Namegiver;Integrated Security=True");
 		}
 
 		[HttpGet]
@@ -23,11 +22,11 @@ namespace Namegiver.Controllers
 		[Route("random")]
 		public async Task<ActionResult<Name>> GetRandomName()
 		{
-			return await names.GetRandomName();
+			return Ok(await names.GetRandomName());
 		}
 
 		[HttpPut]
-		[Route("accept/{id}")]
+		[Route("{id}/accept")]
 		public async Task<ActionResult> AcceptName(int id)
 		{
 			await names.AcceptName(id);
@@ -35,7 +34,7 @@ namespace Namegiver.Controllers
 		}
 
 		[HttpPut]
-		[Route("reject/{id}")]
+		[Route("{id}/reject")]
 		public async Task<ActionResult> RejectName(int id)
 		{
 			await names.RejectName(id);
