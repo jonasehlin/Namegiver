@@ -20,7 +20,7 @@ namespace Namegiver.Models
 		internal async Task<Name> GetRandomName()
 		{
 			Name name = await Db.QueryFirstOrDefaultAsync<Name>(
-				"SELECT TOP 1 * FROM [dbo].[Name] WHERE [Accepted] = 0 AND [Id] != @lastId ORDER BY NEWID()",
+				"SELECT TOP 1 [Id], [Text], [Accepted], [RejectedCount] FROM [dbo].[Name] WHERE [Accepted] = 0 AND [Id] != @lastId ORDER BY CRYPT_GEN_RANDOM(4)",
 				new { lastId });
 			lastId = name.Id;
 			return name;
