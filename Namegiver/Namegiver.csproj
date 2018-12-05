@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\addname.ts" />
     <Content Remove="wwwroot\js\site.ts" />
   </ItemGroup>
 
@@ -17,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\js\addname.ts" />
     <TypeScriptCompile Include="wwwroot\js\site.ts" />
   </ItemGroup>
 

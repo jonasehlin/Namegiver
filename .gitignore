@@ -263,3 +263,4 @@ __pycache__/
 # Custom ignores
 *.js.map
 /Namegiver/wwwroot/js/site.js
+/Namegiver/wwwroot/js/addname.js
