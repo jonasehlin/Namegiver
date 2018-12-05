@@ -64,5 +64,12 @@ SELECT CAST(SCOPE_IDENTITY() as INT)",
 				"UPDATE SET [Accepted] = 0, [RejectedCount] = 0 WHERE [Id] = @id",
 				new { id });
 		}
+
+		internal async Task DeleteName(int id)
+		{
+			await db.ExecuteAsync(
+				"DELETE FROM [dbo].[Name] WHERE [Id] = @id",
+				new { id });
+		}
 	}
 }

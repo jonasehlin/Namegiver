@@ -59,7 +59,7 @@ namespace Namegiver.Controllers
 
 		[HttpPost]
 		[Route("add")]
-		public async Task<ActionResult> AddName([FromBody] Name name)
+		public async Task<ActionResult<int>> AddName([FromBody] Name name)
 		{
 			using (var db = CreateContext())
 			{
@@ -74,6 +74,17 @@ namespace Namegiver.Controllers
 			using (var db = CreateContext())
 			{
 				await db.Names.ResetName(id);
+			}
+			return NoContent();
+		}
+
+		[HttpDelete]
+		[Route("{id}/delete")]
+		public async Task<ActionResult> DeleteName(int id)
+		{
+			using (var db = CreateContext())
+			{
+				await db.Names.DeleteName(id);
 			}
 			return NoContent();
 		}
