@@ -66,5 +66,16 @@ namespace Namegiver.Controllers
 				return Ok(await db.Names.AddName(name));
 			}
 		}
+
+		[HttpPut]
+		[Route("{id}/reset")]
+		public async Task<ActionResult> ResetName(int id)
+		{
+			using (var db = CreateContext())
+			{
+				await db.Names.ResetName(id);
+			}
+			return NoContent();
+		}
 	}
 }

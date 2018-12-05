@@ -57,5 +57,12 @@ SELECT CAST(SCOPE_IDENTITY() as INT)",
 				new { Text = name.Text.Trim() }
 				)).Value;
 		}
+
+		internal async Task ResetName(int id)
+		{
+			await db.ExecuteAsync(
+				"UPDATE SET [Accepted] = 0, [RejectedCount] = 0 WHERE [Id] = @id",
+				new { id });
+		}
 	}
 }
