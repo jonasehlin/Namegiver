@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="~/js/site.js"></script>
 </head>
 <body>
 
@@ -18,63 +19,22 @@
 
 		<div class="row">
 			<div class="col-xs-12">
-				<h1>Here's a name for ya: <span id="name"></span></h1>
+				<h2>Here's a name for ya:</h2>
 			</div>
 		</div>
 
 		<div class="row">
-			<input id="accept" type="button" name="accept" value="Accept" />
-			<input id="reject" type="button" name="reject" value="Reject" />
+			<div class="col-xs-12">
+				<h1 id="name"></h1>
+			</div>
 		</div>
 
-		<script>
-			$(document).ready(function () {
-
-				var nameId = 0;
-
-				$.ajax({
-					url: '/api/names',
-					type: 'GET'
-				}).done(function (data, status, xhr) {
-					console.log('Success, data', data);
-					$('#name').text(data.text);
-					nameId = data.id;
-				}).fail(function (jqXhr, textStatus, errorMessage) {
-					console.log('Error in response from /api/names', textStatus);
-					nameId = -1;
-				});
-
-				$('#accept').click(function () {
-					if (nameId > 0) {
-
-						$.ajax({
-							url: '/api/names/' + nameId + '/accept',
-							type: 'PUT'
-						}).done(function (data, status, xhr) {
-							alert('Accept: ' + nameId);
-							// TODO: Load new random name
-						}).fail(function (jqXhr, textStatus, errorMessage) {
-							alert('Error: ' + nameId);
-						});
-					}
-				});
-
-				$('#reject').click(function () {
-					if (nameId > 0) {
-
-						$.ajax({
-							url: '/api/names/' + nameId + '/reject',
-							type: 'PUT'
-						}).done(function (data, status, xhr) {
-							alert('Reject: ' + nameId);
-							// TODO: Load new random name
-						}).fail(function (jqXhr, textStatus, errorMessage) {
-							alert('Error: ' + nameId);
-						});
-					}
-				});
-			});
-		</script>
+		<div class="row">
+			<div class="col-xs-12">
+				<input id="accept" type="button" name="accept" value="Accept" />
+				<input id="reject" type="button" name="reject" value="Reject" />
+			</div>
+		</div>
 
 	</div>
 
