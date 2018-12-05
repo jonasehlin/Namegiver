@@ -56,5 +56,15 @@ namespace Namegiver.Controllers
 			}
 			return NoContent();
 		}
+
+		[HttpPost]
+		[Route("add")]
+		public async Task<ActionResult> AddName([FromBody] Name name)
+		{
+			using (var db = CreateContext())
+			{
+				return Ok(await db.Names.AddName(name));
+			}
+		}
 	}
 }
