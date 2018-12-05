@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Namegiver.Models;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Namegiver.Controllers
 {
@@ -87,6 +88,16 @@ namespace Namegiver.Controllers
 				await db.Names.DeleteName(id);
 			}
 			return NoContent();
+		}
+
+		[HttpGet]
+		[Route("rejected")]
+		public async Task< ActionResult<IEnumerable<Name>>> GetTopRejectedNames()
+		{
+			using (var db = CreateContext())
+			{
+				return Ok(await db.Names.GetTopRejectedNames());
+			}
 		}
 	}
 }

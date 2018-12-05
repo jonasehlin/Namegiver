@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -70,6 +71,15 @@ SELECT CAST(SCOPE_IDENTITY() as INT)",
 			await db.ExecuteAsync(
 				"DELETE FROM [dbo].[Name] WHERE [Id] = @id",
 				new { id });
+		}
+
+		internal async Task<IEnumerable<Name>> GetTopRejectedNames()
+		{
+			return await db.QueryAsync<Name>(@"
+SELECT TOP 10 *
+FROM [dbo].[Name]
+WHERE [RejectedCount] > 0
+ORDER BY [RejectedCount] DESC");
 		}
 	}
 }
