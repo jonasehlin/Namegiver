@@ -1,0 +1,16 @@
+﻿@page
+@model Namegiver.Pages.AddNameModel
+@{
+    ViewData["Title"] = "AddName";
+    Layout = "_Layout";
+}
+
+<form action="/AddName">
+	<div class="form-group">
+		<h2>Add a new name:</h2>
+		<input type="email" class="form-control" id="name">
+	</div>
+	<button type="submit" class="btn btn-default">Add</button>
+</form>
+<br/>
+<a href="/">Go back</a>

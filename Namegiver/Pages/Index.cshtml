@@ -1,6 +1,7 @@
 ﻿@page
 @model Namegiver.Pages.IndexModel
 @{
+	ViewData["Title"] = "Index";
 	Layout = "_Layout";
 }
 
@@ -9,19 +10,22 @@
 		<h2>Here's a name for ya:</h2>
 	</div>
 </div>
-
 <div class="row">
 	<div class="col-xs-12">
 		<h1 id="name">?</h1>
 	</div>
 </div>
-
 <br />
-
 <div class="row">
 	<div class="col-xs-12">
 		<button id="accept" type="button" class="btn btn-success">Accept</button>
 		<button id="reject" type="button" class="btn btn-danger">Reject</button>
+	</div>
+</div>
+<br />
+<div class="row">
+	<div class="col-xs-12">
+		<a href="/AddName">Add a new name</a>
 	</div>
 </div>
 
