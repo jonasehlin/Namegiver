@@ -34,7 +34,6 @@
 			API.rejectName(
 				currentName,
 				function () {
-					alert('Name "' + currentName.Text + '" rejected!');
 					updateRandomName();
 				},
 				function (jqXhr, textStatus, errorMessage) {
