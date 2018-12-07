@@ -24,20 +24,13 @@ namespace Namegiver.Pages
 			Configuration = configuration;
 		}
 
-		private NamegiverContext CreateContext()
-		{
-			string connectionString = Configuration.GetConnectionString("DefaultConnection");
-			connectionString = connectionString.Replace("{server}", Configuration.GetSection("NAMEGIVER_SERVER").Value);
-			return new NamegiverContext(connectionString);
-		}
-
 		public async Task<IActionResult> OnPostAsync()
 		{
 			if (ModelState.IsValid)
 			{
 				try
 				{
-					using (var db = CreateContext())
+					using (var db = NamegiverContext.CreateDefault(Configuration))
 					{
 						int newId = await db.Names.AddName(new Name() { Text = Name });
 						Status = $"\"{Name}\" successfully added with id: {newId}";

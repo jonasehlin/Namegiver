@@ -17,19 +17,12 @@ namespace Namegiver.Controllers
 			Configuration = configuration;
 		}
 
-		private NamegiverContext CreateContext()
-		{
-			string connectionString = Configuration.GetConnectionString("DefaultConnection");
-			connectionString = connectionString.Replace("{server}", Configuration.GetSection("NAMEGIVER_SERVER").Value);
-			return new NamegiverContext(connectionString);
-		}
-
 		[HttpGet]
 		[Route("")]
 		[Route("random")]
 		public async Task<ActionResult<Name>> GetRandomName()
 		{
-			using (var db = CreateContext())
+			using (var db = NamegiverContext.CreateDefault(Configuration))
 			{
 				return Ok(await db.Names.GetRandomName());
 			}
@@ -39,7 +32,7 @@ namespace Namegiver.Controllers
 		[Route("{id}/accept")]
 		public async Task<ActionResult> AcceptName(int id)
 		{
-			using (var db = CreateContext())
+			using (var db = NamegiverContext.CreateDefault(Configuration))
 			{
 				await db.Names.AcceptName(id);
 			}
@@ -51,7 +44,7 @@ namespace Namegiver.Controllers
 		[Route("{id}/reject")]
 		public async Task<ActionResult> RejectName(int id)
 		{
-			using (var db = CreateContext())
+			using (var db = NamegiverContext.CreateDefault(Configuration))
 			{
 				await db.Names.RejectName(id);
 			}
@@ -62,7 +55,7 @@ namespace Namegiver.Controllers
 		[Route("add")]
 		public async Task<ActionResult<int>> AddName([FromBody] Name name)
 		{
-			using (var db = CreateContext())
+			using (var db = NamegiverContext.CreateDefault(Configuration))
 			{
 				return Ok(await db.Names.AddName(name));
 			}
@@ -72,7 +65,7 @@ namespace Namegiver.Controllers
 		[Route("{id}/reset")]
 		public async Task<ActionResult> ResetName(int id)
 		{
-			using (var db = CreateContext())
+			using (var db = NamegiverContext.CreateDefault(Configuration))
 			{
 				await db.Names.ResetName(id);
 			}
@@ -83,7 +76,7 @@ namespace Namegiver.Controllers
 		[Route("{id}/delete")]
 		public async Task<ActionResult> DeleteName(int id)
 		{
-			using (var db = CreateContext())
+			using (var db = NamegiverContext.CreateDefault(Configuration))
 			{
 				await db.Names.DeleteName(id);
 			}
@@ -94,7 +87,7 @@ namespace Namegiver.Controllers
 		[Route("rejected")]
 		public async Task< ActionResult<IEnumerable<Name>>> GetTopRejectedNames()
 		{
-			using (var db = CreateContext())
+			using (var db = NamegiverContext.CreateDefault(Configuration))
 			{
 				return Ok(await db.Names.GetTopRejectedNames());
 			}
