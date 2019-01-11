@@ -20,7 +20,10 @@ namespace Namegiver.Models
 		internal static NamegiverContext CreateDefault(IConfiguration configuration)
 		{
 			string connectionString = configuration.GetConnectionString("DefaultConnection");
-			connectionString = connectionString.Replace("{server}", configuration.GetSection("NAMEGIVER_SERVER").Value);
+			string server = configuration.GetSection("NAMEGIVER_SERVER").Value;
+			if (string.IsNullOrWhiteSpace(server))
+				server = "(localhost)";
+			connectionString = connectionString.Replace("{server}", server);
 			return new NamegiverContext(connectionString);
 		}
 
