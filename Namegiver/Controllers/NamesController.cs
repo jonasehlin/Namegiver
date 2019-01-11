@@ -18,14 +18,21 @@ namespace Namegiver.Controllers
 		}
 
 		[HttpGet]
-		[Route("")]
-		[Route("random")]
+		[Route(""), Route("random")]
 		public async Task<ActionResult<Name>> GetRandomName()
 		{
 			using (var db = NamegiverContext.CreateDefault(Configuration))
 			{
 				return Ok(await db.Names.GetRandomName());
 			}
+		}
+
+		[HttpGet]
+		[Route("server")]
+		public string GetServer()
+		{
+			string server = Configuration.GetSection("NAMEGIVER_SERVER").Value;
+			return string.IsNullOrWhiteSpace(server) ? "<none>" : server;
 		}
 
 		[HttpPut]
