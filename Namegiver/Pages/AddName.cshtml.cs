@@ -30,7 +30,7 @@ namespace Namegiver.Pages
 			{
 				try
 				{
-					using (var db = NamegiverContext.CreateDefault(Configuration))
+					using (var db = new NamegiverContext(Configuration))
 					{
 						var name = new Name()
 						{

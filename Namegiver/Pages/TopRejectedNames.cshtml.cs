@@ -19,7 +19,7 @@ namespace Namegiver.Pages
 
 		public async Task OnGetAsync()
 		{
-			using (var db = NamegiverContext.CreateDefault(Configuration))
+			using (var db = new NamegiverContext(Configuration))
 			{
 				TopList = await db.Names.GetTopRejectedNames();
 			}

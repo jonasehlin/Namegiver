@@ -21,7 +21,7 @@ namespace Namegiver.Controllers
 		[Route(""), Route("random")]
 		public async Task<ActionResult<NameInfo>> GetRandomName()
 		{
-			using (var db = NamegiverContext.CreateDefault(Configuration))
+			using (var db = new NamegiverContext(Configuration))
 			{
 				return Ok(await db.Names.GetRandomNameInfo());
 			}
@@ -31,7 +31,7 @@ namespace Namegiver.Controllers
 		[Route("{id}/accept")]
 		public async Task<ActionResult> AcceptName(int id)
 		{
-			using (var db = NamegiverContext.CreateDefault(Configuration))
+			using (var db = new NamegiverContext(Configuration))
 			{
 				await db.Names.AcceptName(id);
 			}
@@ -43,7 +43,7 @@ namespace Namegiver.Controllers
 		[Route("{id}/reject")]
 		public async Task<ActionResult> RejectName(int id)
 		{
-			using (var db = NamegiverContext.CreateDefault(Configuration))
+			using (var db = new NamegiverContext(Configuration))
 			{
 				await db.Names.RejectName(id);
 			}
@@ -54,7 +54,7 @@ namespace Namegiver.Controllers
 		[Route("add")]
 		public async Task<ActionResult<int>> AddName([FromBody] Name name)
 		{
-			using (var db = NamegiverContext.CreateDefault(Configuration))
+			using (var db = new NamegiverContext(Configuration))
 			{
 				return Ok(await db.Names.AddName(name));
 			}
@@ -64,7 +64,7 @@ namespace Namegiver.Controllers
 		[Route("{id}/reset")]
 		public async Task<ActionResult> ResetName(int id)
 		{
-			using (var db = NamegiverContext.CreateDefault(Configuration))
+			using (var db = new NamegiverContext(Configuration))
 			{
 				await db.Names.ResetName(id);
 			}
@@ -75,7 +75,7 @@ namespace Namegiver.Controllers
 		[Route("{id}/delete")]
 		public async Task<ActionResult> DeleteName(int id)
 		{
-			using (var db = NamegiverContext.CreateDefault(Configuration))
+			using (var db = new NamegiverContext(Configuration))
 			{
 				await db.Names.DeleteName(id);
 			}
@@ -86,7 +86,7 @@ namespace Namegiver.Controllers
 		[Route("rejected")]
 		public async Task< ActionResult<IEnumerable<Name>>> GetTopRejectedNames()
 		{
-			using (var db = NamegiverContext.CreateDefault(Configuration))
+			using (var db = new NamegiverContext(Configuration))
 			{
 				return Ok(await db.Names.GetTopRejectedNames());
 			}

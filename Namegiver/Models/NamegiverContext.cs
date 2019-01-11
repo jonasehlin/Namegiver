@@ -11,13 +11,7 @@ namespace Namegiver.Models
 
 		internal NamesModel Names { get; }
 
-		internal NamegiverContext(string connectionString)
-		{
-			connection = new SqlConnection(connectionString);
-			Names = new NamesModel(connection);
-		}
-
-		internal static NamegiverContext CreateDefault(IConfiguration configuration)
+		internal NamegiverContext(IConfiguration configuration)
 		{
 			string connectionString = configuration.GetSection("NAMEGIVER").Value;
 			if (string.IsNullOrWhiteSpace(connectionString))
