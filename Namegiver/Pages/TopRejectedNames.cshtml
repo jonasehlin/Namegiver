@@ -1,0 +1,27 @@
+﻿@page
+@model Namegiver.Pages.TopRejectedNamesModel
+@{
+    ViewData["Title"] = "TopRejectedNames";
+    Layout = "_Layout";
+}
+
+<h2>TopRejectedNames</h2>
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Rejected Count</th>
+		</tr>
+	</thead>
+	<tbody>
+		@{ 
+			foreach (Namegiver.Models.Name name in Model.TopList)
+			{
+				<tr>
+					<td></td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
