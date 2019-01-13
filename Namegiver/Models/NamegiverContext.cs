@@ -19,11 +19,9 @@ namespace Namegiver.Models
 
 		internal static NamegiverContext CreateDefault(IConfiguration configuration)
 		{
-			string connectionString = configuration.GetConnectionString("DefaultConnection");
-			string server = configuration.GetSection("NAMEGIVER_SERVER").Value;
-			if (string.IsNullOrWhiteSpace(server))
-				server = "(localhost)";
-			connectionString = connectionString.Replace("{server}", server);
+			string connectionString = configuration.GetSection("NAMEGIVER").Value;
+			if (string.IsNullOrWhiteSpace(connectionString))
+				throw new ArgumentException("ConnectionString is empty", nameof(connectionString));
 			return new NamegiverContext(connectionString);
 		}
 
