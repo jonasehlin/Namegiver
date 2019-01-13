@@ -27,14 +27,6 @@ namespace Namegiver.Controllers
 			}
 		}
 
-		[HttpGet]
-		[Route("server")]
-		public string GetServer()
-		{
-			string server = Configuration.GetSection("NAMEGIVER_SERVER").Value;
-			return string.IsNullOrWhiteSpace(server) ? "<none>" : server;
-		}
-
 		[HttpPut]
 		[Route("{id}/accept")]
 		public async Task<ActionResult> AcceptName(int id)
