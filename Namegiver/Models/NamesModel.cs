@@ -55,7 +55,7 @@ WHERE [Accepted] = 0 AND [Id] != @lastId ORDER BY CRYPT_GEN_RANDOM(4)",
 			if (db.State == ConnectionState.Open)
 				db.Close();
 
-			using (var scope = new TransactionScope())
+			using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
 			{
 				name.Id = await CreateName(name);
 
@@ -76,7 +76,8 @@ WHERE [Accepted] = 0 AND [Id] != @lastId ORDER BY CRYPT_GEN_RANDOM(4)",
 			int? nameId = await db.ExecuteScalarAsync<int?>(@"
 INSERT INTO [dbo].[Name] ([Gender], [SuperType])
 VALUES (@Gender, @SuperType)
-SELECT CAST(SCOPE_IDENTITY() AS INT)");
+SELECT CAST(SCOPE_IDENTITY() AS INT)",
+				name);
 			if (nameId <= 0)
 				throw new ArgumentException("Could not create a Name row", nameof(name));
 			return nameId.Value;
