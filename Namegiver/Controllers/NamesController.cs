@@ -19,11 +19,11 @@ namespace Namegiver.Controllers
 
 		[HttpGet]
 		[Route(""), Route("random")]
-		public async Task<ActionResult<Name>> GetRandomName()
+		public async Task<ActionResult<NameInfo>> GetRandomName()
 		{
 			using (var db = NamegiverContext.CreateDefault(Configuration))
 			{
-				return Ok(await db.Names.GetRandomName());
+				return Ok(await db.Names.GetRandomNameInfo());
 			}
 		}
 

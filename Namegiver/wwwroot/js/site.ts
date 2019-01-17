@@ -1,15 +1,14 @@
 ﻿module Namegiver {
 
-	interface Name {
+	interface NameInfo {
 		Id: number;
-		Text: string;
+		NameId: number;
+		Name: string;
 		Accepted: boolean;
 		RejectedCount: number;
-		Language: string;
-		Gender: number;
 	}
 
-	let currentName: Name = null;
+	let currentName: NameInfo = null;
 
 	$(document).ready(function () {
 		updateRandomName();
@@ -21,11 +20,11 @@
 			API.acceptName(
 				currentName,
 				function () {
-					alert('Name "' + currentName.Text + '" accepted!');
+					alert('Name "' + currentName.Name + '" accepted!');
 					updateRandomName();
 				},
-				function (jqXhr, textStatus, errorMessage) {
-					alert('Error, ' + currentName.Text);
+				function (_jqXhr, _textStatus, _errorMessage) {
+					alert('Error, ' + currentName.Name);
 				}
 			);
 		});
@@ -36,24 +35,24 @@
 				function () {
 					updateRandomName();
 				},
-				function (jqXhr, textStatus, errorMessage) {
-					alert('Error, ' + currentName.Text);
+				function (_jqXhr, _textStatus, _errorMessage) {
+					alert('Error, ' + currentName.Name);
 				}
 			);
 		});
 	}
 
 	function updateRandomName() {
-		API.getRandomName(function (name: Name) {
-			$('#name').text(name.Text);
+		API.getRandomName(function (name: NameInfo) {
+			$('#name').text(name.Name);
 			currentName = name;
-		}, function (jqXhr, textStatus, errorMessage) {
+		}, function (_jqXhr, _textStatus, _errorMessage) {
 			currentName = null;
 		});
 	}
 
 	module API {
-		export function getRandomName(doneCallback: (name: Name) => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
+		export function getRandomName(doneCallback: (name: NameInfo) => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
 			$.ajax({
 				url: '/api/names',
 				type: 'GET'
@@ -66,7 +65,7 @@
 			});
 		}
 
-		export function acceptName(name: Name, doneCallback: () => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
+		export function acceptName(name: NameInfo, doneCallback: () => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
 			if (name) {
 				$.ajax({
 					url: '/api/names/' + name.Id + '/accept',
@@ -81,7 +80,7 @@
 			}
 		}
 
-		export function rejectName(name: Name, doneCallback: () => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
+		export function rejectName(name: NameInfo, doneCallback: () => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
 			if (name) {
 				$.ajax({
 					url: '/api/names/' + name.Id + '/reject',

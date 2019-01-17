@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Namegiver.Models
 {
@@ -24,45 +25,84 @@ namespace Namegiver.Models
 				new { id });
 		}
 
-		internal async Task<Name> GetRandomName()
+		internal async Task<NameInfo> GetRandomNameInfo()
 		{
-			Name name = await db.QueryFirstOrDefaultAsync<Name>(
-				"SELECT TOP 1 [Id], [Text], [Accepted], [RejectedCount] FROM [dbo].[Name] WHERE [Accepted] = 0 AND [Id] != @lastId ORDER BY CRYPT_GEN_RANDOM(4)",
+			NameInfo info = await db.QueryFirstOrDefaultAsync<NameInfo>(@"
+SELECT TOP 1 [Id], [Name]
+FROM [dbo].[NameInfo]
+WHERE [Accepted] = 0 AND [Id] != @lastId ORDER BY CRYPT_GEN_RANDOM(4)",
 				new { lastId });
-			lastId = name.Id;
-			return name;
+			lastId = info.Id;
+			return info;
 		}
 
 		internal async Task AcceptName(int id)
 		{
 			await db.ExecuteAsync(
-				"UPDATE [dbo].[Name] SET [Accepted] = 1 WHERE [Id] = @id",
+				"UPDATE [dbo].[NameInfo] SET [Accepted] = 1 WHERE [Id] = @id",
 				new { id });
 		}
 
 		internal async Task RejectName(int id)
 		{
 			await db.ExecuteAsync(
-				"UPDATE [dbo].[Name] SET [Accepted] = 0, [RejectedCount] = [RejectedCount] + 1 WHERE [Id] = @id",
+				"UPDATE [dbo].[NameInfo] SET [Accepted] = 0, [RejectedCount] = [RejectedCount] + 1 WHERE [Id] = @id",
 				new { id });
 		}
 
 		internal async Task<int> AddName(Name name)
 		{
-			if (string.IsNullOrWhiteSpace(name.Text))
-				throw new ArgumentException("Need a name", nameof(name.Text));
+			if (db.State == ConnectionState.Open)
+				db.Close();
 
-			return (await db.QueryFirstAsync<int?>(@"
-INSERT INTO [dbo].[Name] ([Text]) VALUES (@Text)
+			using (var scope = new TransactionScope())
+			{
+				name.Id = await CreateName(name);
+
+				foreach (var info in name.Infos)
+				{
+					info.NameId = name.Id;
+					info.Id = await CreateNameInfo(info);
+				}
+
+				scope.Complete();
+			}
+
+			return name.Id;
+		}
+
+		private async Task<int> CreateName(Name name)
+		{
+			int? nameId = await db.ExecuteScalarAsync<int?>(@"
+INSERT INTO [dbo].[Name] ([Gender], [SuperType])
+VALUES (@Gender, @SuperType)
+SELECT CAST(SCOPE_IDENTITY() AS INT)");
+			if (nameId <= 0)
+				throw new ArgumentException("Could not create a Name row", nameof(name));
+			return nameId.Value;
+		}
+
+		private async Task<int> CreateNameInfo(NameInfo info)
+		{
+			info.Name = info.Name.Trim();
+
+			if (string.IsNullOrEmpty(info.Name))
+				throw new ArgumentException("Name must not be empty", nameof(info.Name));
+
+			int? infoId = await db.ExecuteScalarAsync<int?>(@"
+INSERT INTO [dbo].[NameInfo] ([NameId], [Name], [Language])
+VALUES (@NameId, @Name, @Language)
 SELECT CAST(SCOPE_IDENTITY() as INT)",
-				new { Text = name.Text.Trim() }
-				)).Value;
+				info);
+			if (infoId <= 0)
+				throw new ArgumentException("Could not create a NameInfo row", nameof(info));
+			return infoId.Value;
 		}
 
 		internal async Task ResetName(int id)
 		{
 			await db.ExecuteAsync(
-				"UPDATE SET [Accepted] = 0, [RejectedCount] = 0 WHERE [Id] = @id",
+				"UPDATE [dbo].[Name] SET [Accepted] = 0, [RejectedCount] = 0 WHERE [Id] = @id",
 				new { id });
 		}
 

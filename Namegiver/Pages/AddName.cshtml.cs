@@ -32,7 +32,11 @@ namespace Namegiver.Pages
 				{
 					using (var db = NamegiverContext.CreateDefault(Configuration))
 					{
-						int newId = await db.Names.AddName(new Name() { Text = Name });
+						var name = new Name()
+						{
+							Infos = new[] { new NameInfo() { Name = this.Name } }
+						};
+						int newId = await db.Names.AddName(name);
 						Status = $"\"{Name}\" successfully added with id: {newId}";
 					}
 				}
