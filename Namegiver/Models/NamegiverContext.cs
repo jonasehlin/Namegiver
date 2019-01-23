@@ -16,7 +16,7 @@ namespace Namegiver.Models
 			string connectionString = configuration.GetSection("NAMEGIVER").Value;
 			if (string.IsNullOrWhiteSpace(connectionString))
 				throw new ArgumentException("ConnectionString is empty", nameof(connectionString));
-			return new NamegiverContext(connectionString);
+			connection = new SqlConnection(connectionString);
 		}
 
 		public void Dispose()
