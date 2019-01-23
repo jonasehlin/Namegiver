@@ -21,7 +21,7 @@ namespace Namegiver
 		{
 			services.AddMvc()
 				.SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-				.AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver()); ;
+				.AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
