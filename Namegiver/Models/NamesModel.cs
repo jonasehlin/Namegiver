@@ -18,17 +18,24 @@ namespace Namegiver.Models
 			this.db = db;
 		}
 
-		private async Task<Name> GetName(int id)
+		private async Task<NameDto> GetName(int nameId)
 		{
-			return await db.QueryFirstAsync<Name>(
-				"SELECT [Id], [Text], [Accepted], [RejectedCount] FROM [dbo].[Name] WHERE [Id] = @id",
-				new { id });
+			return new NameDto()
+			{
+				Name = await db.QueryFirstAsync<Name>(@"
+SELECT [Id], [Text], [Accepted], [RejectedCount] FROM [dbo].[Name] WHERE [Id] = @nameId",
+					new { nameId }),
+				Infos = await db.QueryAsync<NameInfo>(@"
+SELECT [Id], [NameId], [Name], [Accepted], [RejectedCount], [Language]
+FROM [dbo].[NameInfo] WHERE [NameId] = @nameId",
+					new { nameId })
+			};
 		}
 
 		internal async Task<NameInfo> GetRandomNameInfo()
 		{
 			NameInfo info = await db.QueryFirstOrDefaultAsync<NameInfo>(@"
-SELECT TOP 1 [Id], [Name]
+SELECT TOP 1 [Id], [NameId], [Name]
 FROM [dbo].[NameInfo]
 WHERE [Accepted] = 0 AND [Id] != @lastId ORDER BY CRYPT_GEN_RANDOM(4)",
 				new { lastId });
@@ -114,11 +121,11 @@ SELECT CAST(SCOPE_IDENTITY() as INT)",
 				new { id });
 		}
 
-		internal async Task<IEnumerable<Name>> GetTopRejectedNames()
+		internal async Task<IEnumerable<NameInfo>> GetTopRejectedNames()
 		{
-			return await db.QueryAsync<Name>(@"
-SELECT TOP 10 *
-FROM [dbo].[Name]
+			return await db.QueryAsync<NameInfo>(@"
+SELECT TOP 10 [Id], [NameId], [Name], [RejectedCount]
+FROM [dbo].[NameInfo]
 WHERE [RejectedCount] > 0
 ORDER BY [RejectedCount] DESC");
 		}

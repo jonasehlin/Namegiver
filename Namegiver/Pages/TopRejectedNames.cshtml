@@ -1,27 +1,38 @@
 ﻿@page
 @model Namegiver.Pages.TopRejectedNamesModel
 @{
-    ViewData["Title"] = "TopRejectedNames";
-    Layout = "_Layout";
+	ViewData["Title"] = "TopRejectedNames";
+	Layout = "_Layout";
 }
 
-<h2>TopRejectedNames</h2>
+@using Namegiver.Models
 
-<table>
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Rejected Count</th>
-		</tr>
-	</thead>
-	<tbody>
-		@{ 
-			foreach (Namegiver.Models.Name name in Model.TopList)
+<h2>Top Rejected Names</h2>
+
+<div class="row header">
+	<div class="col-xs-4">
+	</div>
+	<div class="col-xs-4">
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Rejected Count</th>
+				</tr>
+			</thead>
+			<tbody>
+@{
+			foreach (NameInfo info in Model.TopList)
 			{
 				<tr>
-					<td></td>
+					<td>@info.Name</td>
+					<td>@info.RejectedCount</td>
 				</tr>
 			}
-		}
-	</tbody>
-</table>
+}
+			</tbody>
+		</table>
+	</div>
+	<div class="col-xs-4">
+	</div>
+</div>

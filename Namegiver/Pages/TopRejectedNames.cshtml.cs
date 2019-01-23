@@ -8,7 +8,7 @@ namespace Namegiver.Pages
 {
 	public class TopRejectedNamesModel : PageModel
 	{
-		public IEnumerable<Name> TopList { get; private set; }
+		public IEnumerable<NameInfo> TopList { get; private set; }
 
 		private readonly IConfiguration Configuration;
 
