@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -20,16 +21,28 @@ namespace Namegiver.Models
 
 		private async Task<NameDto> GetName(int nameId)
 		{
+			IEnumerable<NameProperty> properties = await db.QueryAsync<NameProperty>(@"
+SELECT [Id], [NameId], [Key], [Value] FROM [dbo].[NameProperty] WHERE [NameId] = @nameId",
+				new { nameId });
 			return new NameDto()
 			{
 				Name = await db.QueryFirstAsync<Name>(@"
 SELECT [Id], [Text], [Accepted], [RejectedCount] FROM [dbo].[Name] WHERE [Id] = @nameId",
 					new { nameId }),
-				Infos = await db.QueryAsync<NameInfo>(@"
+				InfoUrl = properties.FirstOrDefault(p => p.Key == "InfoUrl")?.Value,
+				ImageUrl = properties.FirstOrDefault(p => p.Key == "ImageUrl")?.Value,
+				NameInfos = await db.QueryAsync<NameInfo>(@"
 SELECT [Id], [NameId], [Name], [Accepted], [RejectedCount], [Language]
 FROM [dbo].[NameInfo] WHERE [NameId] = @nameId",
 					new { nameId })
 			};
+		}
+
+		internal async Task<string> GetNameInfoUrl(int nameId)
+		{
+			return await db.ExecuteScalarAsync<string>(
+				"SELECT TOP 1 [Value] FROM [dbo].[NameProperty] WHERE [NameId] = @nameId",
+				new { nameId });
 		}
 
 		internal async Task<NameInfo> GetRandomNameInfo()

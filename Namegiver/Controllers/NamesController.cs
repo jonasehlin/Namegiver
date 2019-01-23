@@ -27,6 +27,16 @@ namespace Namegiver.Controllers
 			}
 		}
 
+		[HttpGet]
+		[Route("{id}/infourl")]
+		public async Task<ActionResult<string>> GetNameInfoUrl(int id)
+		{
+			using (var db = new NamegiverContext(Configuration))
+			{
+				return Ok(await db.Names.GetNameInfoUrl(id));
+			}
+		}
+
 		[HttpPut]
 		[Route("{id}/accept")]
 		public async Task<ActionResult> AcceptName(int id)
