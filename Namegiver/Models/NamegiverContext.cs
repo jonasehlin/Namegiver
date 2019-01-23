@@ -17,6 +17,8 @@ namespace Namegiver.Models
 			if (string.IsNullOrWhiteSpace(connectionString))
 				throw new ArgumentException("ConnectionString is empty", nameof(connectionString));
 			connection = new SqlConnection(connectionString);
+
+			Names = new NamesModel(connection);
 		}
 
 		public void Dispose()
