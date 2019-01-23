@@ -25,3 +25,21 @@ GO
 CREATE UNIQUE NONCLUSTERED INDEX [IX_Name_Unique]
     ON [dbo].[NameInfo]([Name] ASC);
 GO
+
+CREATE NONCLUSTERED INDEX [IX_NameInfo_NameId]
+    ON [dbo].[NameInfo]([NameId] ASC);
+GO
+
+CREATE TABLE [dbo].[NameProperty] (
+    [Id]     INT            IDENTITY (1, 1) NOT NULL,
+    [NameId] INT            NOT NULL,
+    [Key]    NVARCHAR (10)  NULL,
+    [Value]  NVARCHAR (MAX) NULL,
+    CONSTRAINT [PK_NameProperty] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_NameProperty_Name] FOREIGN KEY ([NameId]) REFERENCES [dbo].[Name] ([Id]) ON DELETE CASCADE
+);
+GO
+
+CREATE NONCLUSTERED INDEX [IX_NameProperty_Name]
+    ON [dbo].[NameProperty]([NameId] ASC);
+GO
