@@ -7,6 +7,6 @@ namespace Namegiver.Models
 	{
 		None = 0,
 		SuperHero = 1,
-		SuperVillain = 3,
+		SuperVillain = 2,
 	}
 }
