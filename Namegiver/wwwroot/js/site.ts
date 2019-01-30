@@ -40,6 +40,12 @@
 				}
 			);
 		});
+
+		$('#newNameBtn').on('click', function (ev) {
+			ev.preventDefault();
+			$('#name').text('?');
+			updateRandomName();
+		});
 	}
 
 	function updateRandomName() {
