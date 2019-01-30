@@ -4,9 +4,10 @@
 	ViewData["Title"] = "Index";
 	Layout = "_Layout";
 }
+@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
 
 @section Scripts {
-	<script src="~/js/site.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
 }
 
 <div class="row">
@@ -16,7 +17,10 @@
 </div>
 <div class="row">
 	<div class="col-xs-12">
-		<h1 id="name">?</h1>
+		<h1>
+			<span id="name" style="display: none;"></span>
+			<span class="loader"></span>
+		</h1>
 	</div>
 </div>
 <br />

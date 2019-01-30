@@ -43,14 +43,16 @@
 
 		$('#newNameBtn').on('click', function (ev) {
 			ev.preventDefault();
-			$('#name').text('?');
+			$('#name').hide();
+			$('.loader').show();
 			updateRandomName();
 		});
 	}
 
 	function updateRandomName() {
 		API.getRandomName(function (name: NameInfo) {
-			$('#name').text(name.Name);
+			$('#name').text(name.Name).show();
+			$('.loader').hide();
 			currentName = name;
 		}, function (_jqXhr, _textStatus, _errorMessage) {
 			currentName = null;
