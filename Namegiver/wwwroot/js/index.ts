@@ -1,6 +1,6 @@
 ﻿module Namegiver.Index {
 
-	let currentName: NameInfo = null;
+	let currentName: Dtos.NameInfo = null;
 
 	$(document).ready(function () {
 		updateRandomName();
@@ -42,7 +42,7 @@
 	}
 
 	function updateRandomName() {
-		API.getRandomName(function (name: NameInfo) {
+		API.getRandomName(function (name: Dtos.NameInfo) {
 			let nameNode: HTMLElement = document.getElementById('name');
 			nameNode.innerHTML = '<a href="/Character/' + name.Id + '">' + name.Name + '</a>';
 			nameNode.style.display = '';

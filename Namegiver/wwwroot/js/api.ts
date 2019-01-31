@@ -1,5 +1,5 @@
 ﻿module Namegiver.API {
-	export function getRandomName(doneCallback: (name: NameInfo) => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
+	export function getRandomName(doneCallback: (name: Dtos.NameInfo) => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
 		$.ajax({
 			url: '/api/names',
 			type: 'GET'
@@ -12,7 +12,7 @@
 		});
 	}
 
-	export function acceptName(name: NameInfo, doneCallback: () => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
+	export function acceptName(name: Dtos.NameInfo, doneCallback: () => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
 		if (name) {
 			$.ajax({
 				url: '/api/names/' + name.Id + '/accept',
@@ -27,7 +27,7 @@
 		}
 	}
 
-	export function rejectName(name: NameInfo, doneCallback: () => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
+	export function rejectName(name: Dtos.NameInfo, doneCallback: () => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
 		if (name) {
 			$.ajax({
 				url: '/api/names/' + name.Id + '/reject',

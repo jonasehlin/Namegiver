@@ -7,3 +7,8 @@
 
 <h2>Character</h2>
 
+<h3>Names</h3>
+@foreach (var nameInfo in Model.Name.NameInfos)
+{
+	<p title="@nameInfo.Language">@nameInfo.Name</p>
+}

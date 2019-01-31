@@ -19,22 +19,31 @@ namespace Namegiver.Models
 			this.db = db;
 		}
 
-		private async Task<NameDto> GetName(int nameId)
+		public async Task<NameDto> GetName(int nameInfoId)
 		{
 			IEnumerable<NameProperty> properties = await db.QueryAsync<NameProperty>(@"
-SELECT [Id], [NameId], [Key], [Value] FROM [dbo].[NameProperty] WHERE [NameId] = @nameId",
-				new { nameId });
+				SELECT np.[Id], np.[NameId], np.[Key], np.[Value]
+				FROM [dbo].[NameInfo] ni
+				JOIN [dbo].[NameProperty] np ON np.[NameId] = ni.[NameId]
+				WHERE ni.[Id] = @nameInfoId",
+				new { nameInfoId });
+
 			return new NameDto()
 			{
 				Name = await db.QueryFirstAsync<Name>(@"
-SELECT [Id], [Text], [Accepted], [RejectedCount] FROM [dbo].[Name] WHERE [Id] = @nameId",
-					new { nameId }),
+					SELECT n.[Id], n.[Gender], n.[SuperType]
+					FROM [dbo].[NameInfo] ni
+					JOIN [dbo].[Name] n ON n.[Id] = ni.[NameId]
+					WHERE ni.[Id] = @nameInfoId",
+					new { nameInfoId }),
 				InfoUrl = properties.FirstOrDefault(p => p.Key == "InfoUrl")?.Value,
 				ImageUrl = properties.FirstOrDefault(p => p.Key == "ImageUrl")?.Value,
 				NameInfos = await db.QueryAsync<NameInfo>(@"
-SELECT [Id], [NameId], [Name], [Accepted], [RejectedCount], [Language]
-FROM [dbo].[NameInfo] WHERE [NameId] = @nameId",
-					new { nameId })
+					SELECT i.[Id], i.[NameId], i.[Name], i.[Accepted], i.[RejectedCount], i.[Language]
+					FROM [dbo].[NameInfo] ni
+					JOIN [dbo].[NameInfo] i ON i.[NameId] = ni.[NameId]
+					WHERE ni.[Id] = @nameInfoId",
+					new { nameInfoId })
 			};
 		}
 
