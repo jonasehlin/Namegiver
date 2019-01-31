@@ -11,6 +11,8 @@ namespace Namegiver.Pages
 
 		public NameDto Name { get; set; }
 
+		public int NameInfoId { get; set; }
+
 		public CharacterModel(IConfiguration configuration)
 		{
 			context = new NamegiverContext(configuration);
@@ -18,6 +20,7 @@ namespace Namegiver.Pages
 
 		public async Task OnGetAsync(int id)
 		{
+			NameInfoId = id;
 			Name = await context.Names.GetName(id);
 		}
 	}

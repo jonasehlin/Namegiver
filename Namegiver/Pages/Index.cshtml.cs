@@ -4,8 +4,11 @@ namespace Namegiver.Pages
 {
 	public class IndexModel : PageModel
 	{
-		public void OnGet()
+		public int? NameInfoId { get; set; }
+
+		public void OnGet(int? id)
 		{
+			NameInfoId = id;
 		}
 	}
 }

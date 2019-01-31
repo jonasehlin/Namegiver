@@ -1,9 +1,17 @@
 ﻿module Namegiver.Index {
 
+	// Declared in Index.cshtml
+	declare let nameInfoIdArg: number;
+
 	let currentName: Dtos.NameInfo = null;
 
 	$(document).ready(function () {
-		updateRandomName();
+		if (nameInfoIdArg) {
+			updateName(nameInfoIdArg);
+		}
+		else {
+			updateRandomName();
+		}
 		bindEvents();
 	});
 
@@ -41,15 +49,34 @@
 		});
 	}
 
+	function updateNameUi(nameInfo: Dtos.NameInfo) {
+		let nameNode: HTMLElement = document.getElementById('name');
+		nameNode.innerHTML = '<a href="/Character/' + nameInfo.Id + '">' + nameInfo.Name + '</a>';
+		nameNode.style.display = '';
+		$('.loader').hide();
+		currentName = name;
+	}
+
 	function updateRandomName() {
-		API.getRandomName(function (name: Dtos.NameInfo) {
-			let nameNode: HTMLElement = document.getElementById('name');
-			nameNode.innerHTML = '<a href="/Character/' + name.Id + '">' + name.Name + '</a>';
-			nameNode.style.display = '';
-			$('.loader').hide();
-			currentName = name;
-		}, function (_jqXhr, _textStatus, _errorMessage) {
-			currentName = null;
-		});
+		API.getRandomName(
+			function (name: Dtos.NameInfo) {
+				updateNameUi(name);
+			},
+			function (_jqXhr, _textStatus, _errorMessage) {
+				currentName = null;
+			}
+		);
+	}
+
+	function updateName(nameInfoId: number) {
+		API.getNameInfo(
+			nameInfoId,
+			function (name: Dtos.NameInfo) {
+				updateNameUi(name);
+			},
+			function (_jqXhr, _textStatus, _errorMessage) {
+				currentName = null;
+			}
+		);
 	}
 }
