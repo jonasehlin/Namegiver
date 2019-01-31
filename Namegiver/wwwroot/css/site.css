@@ -37,3 +37,10 @@ a:hover {
 		transform: rotate(360deg);
 	}
 }
+
+.img-character {
+	max-width: 300px;
+	max-height: 300px;
+	width: auto;
+	height: auto;
+}

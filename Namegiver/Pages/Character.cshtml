@@ -7,8 +7,38 @@
 
 <h2>Character</h2>
 
-<h3>Names</h3>
-@foreach (var nameInfo in Model.Name.NameInfos)
-{
-	<p title="@nameInfo.Language">@nameInfo.Name</p>
-}
+<div class="row">
+	@if (!string.IsNullOrWhiteSpace(Model.Name.ImageUrl))
+	{
+		<div class="span2">
+			<img class="img-rounded img-character" src="@Model.Name.ImageUrl" alt="Character profile image" />
+		</div>
+	}
+	<div class="span4">
+		<blockquote>
+			<!--TODO: Show alternative names-->
+			<p>@Model.Name.NameInfos.First().Name</p>
+			<select>
+				@foreach (var nameInfo in Model.Name.NameInfos)
+				{
+					<option value="@nameInfo.Language">@nameInfo.Language</option>
+				}
+			</select>
+		</blockquote>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		@if (!string.IsNullOrWhiteSpace(Model.Name.InfoUrl))
+		{
+			<a href="@Model.Name.InfoUrl" target="_blank">More information</a>
+		}
+		else
+		{
+			<span>No more information</span>
+		}
+		<span> | </span>
+		<a href="/">Go back</a>
+	</div>
+</div>
