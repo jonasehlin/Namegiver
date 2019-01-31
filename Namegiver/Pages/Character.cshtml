@@ -16,14 +16,19 @@
 	}
 	<div class="span4">
 		<blockquote>
-			<!--TODO: Show alternative names-->
-			<p>@Model.Name.NameInfos.First().Name</p>
-			<select>
-				@foreach (var nameInfo in Model.Name.NameInfos)
+			@{
+				var nameInfos = Model.Name.NameInfos.ToList();
+				for (int i = 0; i < nameInfos.Count; i++)
 				{
-					<option value="@nameInfo.Language">@nameInfo.Language</option>
+					var nameInfo = nameInfos[i];
+					string name = nameInfo.Name;
+					if (i < nameInfos.Count - 1)
+					{
+						name += ",";
+					}
+					<span title="@nameInfo.Language">@name</span>
 				}
-			</select>
+			}
 		</blockquote>
 	</div>
 </div>
