@@ -264,3 +264,6 @@ __pycache__/
 *.js.map
 /Namegiver/wwwroot/js/site.js
 /Namegiver/wwwroot/js/addname.js
+/Namegiver/wwwroot/js/api.js
+/Namegiver/wwwroot/js/index.js
+/Namegiver/wwwroot/js/dtos.js

@@ -7,7 +7,9 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\js\addname.ts" />
-    <Content Remove="wwwroot\js\site.ts" />
+    <Content Remove="wwwroot\js\api.ts" />
+    <Content Remove="wwwroot\js\dtos.ts" />
+    <Content Remove="wwwroot\js\index.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,7 +21,18 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="wwwroot\js\addname.ts" />
-    <TypeScriptCompile Include="wwwroot\js\site.ts" />
+    <TypeScriptCompile Include="wwwroot\js\api.ts" />
+    <TypeScriptCompile Include="wwwroot\js\dtos.ts" />
+    <TypeScriptCompile Include="wwwroot\js\index.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\js\dtos.js">
+      <DependentUpon>dtos.ts</DependentUpon>
+    </Content>
+    <Content Update="wwwroot\js\dtos.js.map">
+      <DependentUpon>dtos.js</DependentUpon>
+    </Content>
   </ItemGroup>
 
 </Project>
