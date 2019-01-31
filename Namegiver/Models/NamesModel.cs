@@ -57,11 +57,23 @@ namespace Namegiver.Models
 		internal async Task<NameInfo> GetRandomNameInfo()
 		{
 			NameInfo info = await db.QueryFirstOrDefaultAsync<NameInfo>(@"
-SELECT TOP 1 [Id], [NameId], [Name]
-FROM [dbo].[NameInfo]
-WHERE [Accepted] = 0 AND [Id] != @lastId ORDER BY CRYPT_GEN_RANDOM(4)",
+				SELECT TOP 1 [Id], [NameId], [Name]
+				FROM [dbo].[NameInfo]
+				WHERE [Accepted] = 0 AND [Id] != @lastId ORDER BY CRYPT_GEN_RANDOM(4)",
 				new { lastId });
 			lastId = info.Id;
+			return info;
+		}
+
+		internal async Task<NameInfo> GetNameInfo(int nameInfoId)
+		{
+			NameInfo info = await db.QueryFirstOrDefaultAsync<NameInfo>(@"
+				SELECT TOP 1 [Id], [NameId], [Name]
+				FROM [dbo].[NameInfo]
+				WHERE [Id] = @nameInfoId",
+				new { nameInfoId });
+			if (info != null)
+				lastId = info.Id;
 			return info;
 		}
 

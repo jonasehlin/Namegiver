@@ -12,6 +12,19 @@
 		});
 	}
 
+	export function getNameInfo(nameInfoId: number, doneCallback: (name: Dtos.NameInfo) => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
+		$.ajax({
+			url: '/api/names/' + nameInfoId,
+			type: 'GET'
+		}).done(function (data, status, xhr) {
+			console.log('getNameInfo.done, data', data);
+			doneCallback(data);
+		}).fail(function (jqXhr, textStatus, errorMessage) {
+			console.log('getNameInfo: Error in response from /api/names/' + nameInfoId, textStatus, errorMessage);
+			failCallback(jqXhr, textStatus, errorMessage);
+		});
+	}
+
 	export function acceptName(name: Dtos.NameInfo, doneCallback: () => void, failCallback: (jqXhr, textStatus, errorMessage) => void) {
 		if (name) {
 			$.ajax({

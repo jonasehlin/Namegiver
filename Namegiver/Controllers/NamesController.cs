@@ -28,6 +28,16 @@ namespace Namegiver.Controllers
 		}
 
 		[HttpGet]
+		[Route("{id}")]
+		public async Task<ActionResult<NameInfo>> GetNameInfo(int id)
+		{
+			using (var db = new NamegiverContext(Configuration))
+			{
+				return Ok(await db.Names.GetNameInfo(id));
+			}
+		}
+
+		[HttpGet]
 		[Route("{id}/infourl")]
 		public async Task<ActionResult<string>> GetNameInfoUrl(int id)
 		{
