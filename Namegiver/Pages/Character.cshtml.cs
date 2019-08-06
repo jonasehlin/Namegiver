@@ -9,7 +9,7 @@ namespace Namegiver.Pages
 	{
 		private readonly NamegiverContext context;
 
-		public NameDto Name { get; set; }
+		public Name Name { get; set; }
 
 		public int NameInfoId { get; set; }
 

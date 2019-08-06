@@ -8,16 +8,16 @@
 <h2>Character</h2>
 
 <div class="row">
-	@if (!string.IsNullOrWhiteSpace(Model.Name.ImageUrl))
+	@if (!string.IsNullOrWhiteSpace(Model.Name.Properties.ImageUrl))
 	{
 		<div class="span2">
-			<img class="img-rounded img-character" src="@Model.Name.ImageUrl" alt="Character profile image" />
+			<img class="img-rounded img-character" src="@Model.Name.Properties.ImageUrl" alt="Character profile image" />
 		</div>
 	}
 	<div class="span4">
 		<blockquote>
 			@{
-				var nameInfos = Model.Name.NameInfos.ToList();
+				var nameInfos = Model.Name.Infos.ToList();
 				for (int i = 0; i < nameInfos.Count; i++)
 				{
 					var nameInfo = nameInfos[i];
@@ -35,9 +35,9 @@
 
 <div class="row">
 	<div class="col-xs-12">
-		@if (!string.IsNullOrWhiteSpace(Model.Name.InfoUrl))
+		@if (!string.IsNullOrWhiteSpace(Model.Name.Properties.InfoUrl))
 		{
-			<a href="@Model.Name.InfoUrl" target="_blank">More information</a>
+			<a href="@Model.Name.Properties.InfoUrl" target="_blank">More information</a>
 		}
 		else
 		{

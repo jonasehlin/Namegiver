@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -10,7 +9,7 @@ namespace Namegiver.Models
 {
 	class NamesModel
 	{
-		static int lastId = -1;
+		private static int lastInfoId = -1;
 
 		private readonly IDbConnection db;
 
@@ -19,49 +18,40 @@ namespace Namegiver.Models
 			this.db = db;
 		}
 
-		public async Task<NameDto> GetName(int nameInfoId)
+		public async Task<Name> GetName(int nameInfoId)
 		{
-			IEnumerable<NameProperty> properties = await db.QueryAsync<NameProperty>(@"
-				SELECT np.[Id], np.[NameId], np.[Key], np.[Value]
-				FROM [dbo].[NameInfo] ni
-				JOIN [dbo].[NameProperty] np ON np.[NameId] = ni.[NameId]
-				WHERE ni.[Id] = @nameInfoId",
-				new { nameInfoId });
-
-			return new NameDto()
-			{
-				Name = await db.QueryFirstAsync<Name>(@"
-					SELECT n.[Id], n.[Gender], n.[SuperType]
+			const string sqlGetName = @"
+				SELECT n.[Id], n.[Gender], n.[SuperType], n.[Data]
 					FROM [dbo].[NameInfo] ni
 					JOIN [dbo].[Name] n ON n.[Id] = ni.[NameId]
-					WHERE ni.[Id] = @nameInfoId",
-					new { nameInfoId }),
-				InfoUrl = properties.FirstOrDefault(p => p.Key == "InfoUrl")?.Value,
-				ImageUrl = properties.FirstOrDefault(p => p.Key == "ImageUrl")?.Value,
-				NameInfos = await db.QueryAsync<NameInfo>(@"
+					WHERE ni.[Id] = @nameInfoId";
+			Name name = await db.QueryFirstAsync<Name>(sqlGetName, new { nameInfoId });
+
+			const string sqlGetNameInfos = @"
 					SELECT i.[Id], i.[NameId], i.[Name], i.[Accepted], i.[RejectedCount], i.[Language]
 					FROM [dbo].[NameInfo] ni
 					JOIN [dbo].[NameInfo] i ON i.[NameId] = ni.[NameId]
-					WHERE ni.[Id] = @nameInfoId",
-					new { nameInfoId })
-			};
+					WHERE ni.[Id] = @nameInfoId";
+			name.Infos = await db.QueryAsync<NameInfo>(sqlGetNameInfos, new { nameInfoId });
+
+			return name;
 		}
 
-		internal async Task<string> GetNameInfoUrl(int nameId)
+		internal Task<string> GetNameInfoUrl(int nameId)
 		{
-			return await db.ExecuteScalarAsync<string>(
-				"SELECT TOP 1 [Value] FROM [dbo].[NameProperty] WHERE [NameId] = @nameId",
-				new { nameId });
+			const string sql = "SELECT TOP 1 [Value] FROM [dbo].[NameProperty] WHERE [NameId] = @nameId";
+			return db.ExecuteScalarAsync<string>(sql, new { nameId });
 		}
 
 		internal async Task<NameInfo> GetRandomNameInfo()
 		{
-			NameInfo info = await db.QueryFirstOrDefaultAsync<NameInfo>(@"
+			const string sql = @"
 				SELECT TOP 1 [Id], [NameId], [Name]
 				FROM [dbo].[NameInfo]
-				WHERE [Accepted] = 0 AND [Id] != @lastId ORDER BY CRYPT_GEN_RANDOM(4)",
-				new { lastId });
-			lastId = info.Id;
+				WHERE [Accepted] = 0 AND [Id] != @lastInfoId
+				ORDER BY CRYPT_GEN_RANDOM(4)";
+			NameInfo info = await db.QueryFirstOrDefaultAsync<NameInfo>(sql, new { lastInfoId });
+			lastInfoId = info.Id;
 			return info;
 		}
 
@@ -73,7 +63,7 @@ namespace Namegiver.Models
 				WHERE [Id] = @nameInfoId",
 				new { nameInfoId });
 			if (info != null)
-				lastId = info.Id;
+				lastInfoId = info.Id;
 			return info;
 		}
 
