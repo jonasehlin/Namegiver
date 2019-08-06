@@ -17,12 +17,10 @@
 	<div class="span4">
 		<blockquote>
 			@{
-				var nameInfos = Model.Name.Infos.ToList();
-				for (int i = 0; i < nameInfos.Count; i++)
+				foreach (var nameInfo in Model.Name.Infos)
 				{
-					var nameInfo = nameInfos[i];
 					string name = nameInfo.Name;
-					if (i < nameInfos.Count - 1)
+					if (nameInfo != Model.Name.Infos.Last())
 					{
 						name += ",";
 					}
