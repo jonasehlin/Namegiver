@@ -15,31 +15,33 @@
 	var nameInfoIdArg = @(Model.NameInfoId.HasValue ? Model.NameInfoId.Value.ToString() : "null");
 </script>
 
-<div class="row">
-	<div class="col-sm">
-		<h2>Here's a name for ya:</h2>
+<div class="text-center">
+	<div class="row">
+		<div class="col-sm">
+			<h2>Here's a name for ya:</h2>
+		</div>
 	</div>
-</div>
-<div class="row">
-	<div class="col-sm">
-		<h1>
-			<span id="name" style="display: none;"></span>
-			<span class="loader"></span>
-		</h1>
+	<div class="row">
+		<div class="col-sm">
+			<h1>
+				<span id="name" style="display: none;"></span>
+				<span class="loader"></span>
+			</h1>
+		</div>
 	</div>
-</div>
-<br />
-<div class="row">
-	<div class="col-sm">
-		<button id="accept" type="button" class="btn btn-success">Accept</button>
-		<button id="reject" type="button" class="btn btn-danger">Reject</button>
+	<br />
+	<div class="row">
+		<div class="col-sm">
+			<button id="accept" type="button" class="btn btn-success">Accept</button>
+			<button id="reject" type="button" class="btn btn-danger">Reject</button>
+		</div>
 	</div>
-</div>
-<br />
-<div class="row">
-	<div class="col-sm">
-		<a id="newNameBtn" href="#">Give me a new name</a>
-		<span> | </span>
-		<a href="/AddName">Add a new name</a>
+	<br />
+	<div class="row">
+		<div class="col-sm">
+			<a id="newNameBtn" href="#">Give me a new name</a>
+			<span> | </span>
+			<a href="/AddName">Add a new name</a>
+		</div>
 	</div>
 </div>
