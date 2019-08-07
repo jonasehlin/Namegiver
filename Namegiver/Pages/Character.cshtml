@@ -8,31 +8,33 @@
 <h2>Character</h2>
 
 <div class="row">
-	@if (!string.IsNullOrWhiteSpace(Model.Name.Properties.ImageUrl))
-	{
-		<div class="span2">
-			<img class="img-rounded img-character" src="@Model.Name.Properties.ImageUrl" alt="Character profile image" />
-		</div>
-	}
-	<div class="span4">
-		<blockquote>
-			@{
-				foreach (var nameInfo in Model.Name.Infos)
-				{
-					string name = nameInfo.Name;
-					if (nameInfo != Model.Name.Infos.Last())
+	<div class="col-sm">
+		@if (!string.IsNullOrWhiteSpace(Model.Name.Properties.ImageUrl))
+		{
+			<div class="span2">
+				<img class="img-rounded img-character" src="@Model.Name.Properties.ImageUrl" alt="Character profile image" />
+			</div>
+		}
+		<div class="span4">
+			<blockquote>
+				@{
+					foreach (var nameInfo in Model.Name.Infos)
 					{
-						name += ",";
+						string name = nameInfo.Name;
+						if (nameInfo != Model.Name.Infos.Last())
+						{
+							name += ",";
+						}
+						<span title="@nameInfo.Language">@name</span>
 					}
-					<span title="@nameInfo.Language">@name</span>
 				}
-			}
-		</blockquote>
+			</blockquote>
+		</div>
 	</div>
 </div>
 
 <div class="row">
-	<div class="col-xs-12">
+	<div class="col-sm">
 		@if (!string.IsNullOrWhiteSpace(Model.Name.Properties.InfoUrl))
 		{
 			<a href="@Model.Name.Properties.InfoUrl" target="_blank">More information</a>
