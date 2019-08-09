@@ -15,7 +15,7 @@ namespace Namegiver.Models
 		}
 
 		[JsonIgnore]
-		public NameProperties Properties { get; set; } = new NameProperties();
+		public NameProperties Properties { get; private set; } = new NameProperties();
 
 		[JsonIgnore]
 		public IEnumerable<NameInfo> Infos { get; set; }

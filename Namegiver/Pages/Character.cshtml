@@ -5,76 +5,55 @@
 	Layout = "_Layout";
 }
 
-
-<form class="container">
+<form class="container" method="POST">
+	@Html.AntiForgeryToken()
 	<h2>Character</h2>
-
+	<input type="hidden" name="NameId" value="@Model.Name.Id" />
 	@{
-		int i = 0;
 		foreach (var nameInfo in Model.Name.Infos)
 		{
-			string id = "nameInput" + i;
+			string nameId = "nameInput" + nameInfo.Id;
+			string langId = "langInput" + nameInfo.Id;
 			<div class="row">
 				<div class="col-sm-1">
-					<span>@nameInfo.Language</span>
+					<label for="@langId">Language</label>
+					<select id="@langId" name="@langId">
+						<option value="@nameInfo.Language">@nameInfo.Language</option>
+					</select>
 				</div>
 				<div class="col">
-					<label for="@id">Name</label>
-					<input type="text" class="form-control" id="@id" placeholder="Character name" value="@nameInfo.Name" title="Language: @nameInfo.Language" />
+					<label for="@nameId">Name</label>
+					<input type="text" class="form-control" id="@nameId" name="@nameId" placeholder="Character name" value="@nameInfo.Name" />
 				</div>
 			</div>
-			i++;
 		}
 	}
 
-	<div class="form-group">
-		<label for="exampleInputPassword1">Password</label>
-		<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-	</div>
-	<div class="form-group form-check">
-		<input type="checkbox" class="form-check-input" id="exampleCheck1">
-		<label class="form-check-label" for="exampleCheck1">Check me out</label>
-	</div>
-	<button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-<div class="row">
-	<div class="col-sm">
-		@if (!string.IsNullOrWhiteSpace(Model.Name.Properties.ImageUrl))
-		{
-			<div class="span2">
-				<img class="img-rounded img-character" src="@Model.Name.Properties.ImageUrl" alt="Character profile image" />
-			</div>
-		}
-		<div class="span4">
-			<blockquote>
-				@{
-					foreach (var nameInfo in Model.Name.Infos)
-					{
-						string name = nameInfo.Name;
-						if (nameInfo != Model.Name.Infos.Last())
-						{
-							name += ",";
-						}
-						<span title="@nameInfo.Language">@name</span>
-					}
-				}
-			</blockquote>
+	<div class="row">
+		<div class="col">
+			TODO: Add name...
 		</div>
 	</div>
-</div>
 
-<div class="row">
-	<div class="col-sm">
-		@if (!string.IsNullOrWhiteSpace(Model.Name.Properties.InfoUrl))
-		{
-			<a href="@Model.Name.Properties.InfoUrl" target="_blank">More information</a>
-		}
-		else
-		{
-			<span>No more information</span>
-		}
-		<span> | </span>
-		<a href="/@Model.NameInfoId">Go back</a>
+	<div class="row">
+		<div class="col">
+			<img class="img-rounded img-character" src="@Model.Name.Properties.ImageUrl" alt="Character profile image" />
+		</div>
 	</div>
-</div>
+
+	<div class="row">
+		<div class="col">
+			<a href="@Model.Name.Properties.InfoUrl" target="_blank">More information</a>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col">
+			<a href="/@Model.NameInfoId">Go back</a>
+		</div>
+		<div class="col text-right">
+			<input type="submit" class="btn btn-primary" value="Submit" />
+		</div>
+	</div>
+
+</form>
